@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BG.tres" type="Texture" id=1]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+layer = -10
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+z_index = -10
+
+[node name="Sprite" type="Sprite" parent="ParallaxLayer"]
+position = Vector2( 515.169, 304.268 )
+rotation = -1.5708
+scale = Vector2( 0.295193, 1031.2 )
+z_index = -10
+texture = ExtResource( 1 )

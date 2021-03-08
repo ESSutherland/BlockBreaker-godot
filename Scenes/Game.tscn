@@ -1,0 +1,296 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Scenes/BG.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Score.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scripts/Score.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Lose Box.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/Paddle.gd" type="Script" id=5]
+[ext_resource path="res://paddle.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/Ball.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/Trail.gd" type="Script" id=8]
+[ext_resource path="res://ball.png" type="Texture" id=9]
+[ext_resource path="res://Scenes/Block.tscn" type="PackedScene" id=10]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 639.713, 52.5238 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 60.8469, 338.612 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 780.477, 54.113 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 79.4013, 11.2773 )
+
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 0.87451, 0.113725, 0.113725, 0.109804, 0.760784, 0.184314, 0.184314, 1 )
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 13.0862
+
+[node name="Node" type="Node"]
+
+[node name="Control" type="Control" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="ParallaxBackground" parent="Control" instance=ExtResource( 1 )]
+
+[node name="Panel" type="Panel" parent="Control"]
+margin_right = 1024.0
+margin_bottom = 64.0
+
+[node name="Score" type="Label" parent="Control/Panel"]
+margin_left = 170.0
+margin_top = 10.0
+margin_right = 257.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 2 )
+text = "999"
+script = ExtResource( 3 )
+
+[node name="Score Label" type="Label" parent="Control/Panel"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 162.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 2 )
+text = "SCORE:"
+align = 1
+
+[node name="Walls" type="Node" parent="."]
+
+[node name="Top Wall" type="StaticBody2D" parent="Walls"]
+visible = false
+position = Vector2( 1.85059, 21.2864 )
+collision_layer = 8
+collision_mask = 3
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top Wall"]
+position = Vector2( 510.988, -10.5514 )
+shape = SubResource( 1 )
+
+[node name="Left Wall" type="StaticBody2D" parent="Walls"]
+visible = false
+position = Vector2( -49.9667, -1.85062 )
+collision_layer = 8
+collision_mask = 3
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left Wall"]
+position = Vector2( -9.41333, 297.946 )
+shape = SubResource( 2 )
+
+[node name="Right Wall" type="StaticBody2D" parent="Walls"]
+visible = false
+position = Vector2( 1093.72, 9.25308 )
+collision_layer = 8
+collision_mask = 3
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right Wall"]
+position = Vector2( -9.41333, 297.946 )
+shape = SubResource( 2 )
+
+[node name="Lose Box" type="Area2D" parent="Walls"]
+position = Vector2( 512.926, 673.642 )
+collision_layer = 8
+collision_mask = 2
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+ball = NodePath("../../Ball")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Lose Box"]
+shape = SubResource( 3 )
+
+[node name="Paddle" type="KinematicBody2D" parent="."]
+position = Vector2( 496.848, 528.532 )
+collision_mask = 10
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_group_": true
+}
+speed = 600
+
+[node name="Sprite" type="Sprite" parent="Paddle"]
+modulate = Color( 0.184314, 0.243137, 0.729412, 1 )
+position = Vector2( 0.898056, -0.598769 )
+scale = Vector2( 1.25, 0.75 )
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle"]
+show_behind_parent = true
+position = Vector2( 0.922028, -0.922058 )
+shape = SubResource( 4 )
+
+[node name="Ball" type="KinematicBody2D" parent="."]
+position = Vector2( 495.926, 397.784 )
+collision_layer = 2
+collision_mask = 13
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_group_": true
+}
+minForce = 200
+maxForce = 300
+
+[node name="Node" type="Node" parent="Ball"]
+
+[node name="Trail" type="Line2D" parent="Ball/Node"]
+show_behind_parent = true
+z_index = -1
+width = 20.0
+default_color = Color( 1, 0.0352941, 0.0352941, 1 )
+gradient = SubResource( 5 )
+texture_mode = -1088468804
+script = ExtResource( 8 )
+trailLength = 30
+targetPath = NodePath("../..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="Ball"]
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 9 )
+
+[node name="Blocks" type="Node" parent="."]
+
+[node name="OBlock" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 64.926, 143.585 )
+
+[node name="OBlock2" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 192.926, 143.585 )
+
+[node name="OBlock3" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 320.926, 143.585 )
+
+[node name="OBlock4" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 448.926, 143.585 )
+
+[node name="OBlock5" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 576.926, 143.585 )
+
+[node name="OBlock6" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 704.926, 143.585 )
+
+[node name="OBlock7" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 832.926, 143.585 )
+
+[node name="OBlock8" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.972549, 0.501961, 0.0862745, 1 )
+position = Vector2( 960.926, 143.585 )
+
+[node name="GBlock" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 64.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="GBlock2" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 192.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="GBlock3" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 320.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="GBlock4" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 448.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="GBlock5" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 576.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="GBlock6" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 704.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="GBlock7" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 832.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="GBlock8" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.156863, 1, 0.129412, 1 )
+position = Vector2( 960.926, 111.585 )
+points = 20
+hitsToBreak = 2
+
+[node name="RBlock" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 64.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+
+[node name="RBlock2" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 192.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+
+[node name="RBlock3" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 320.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+
+[node name="RBlock4" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 448.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+
+[node name="RBlock5" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 832.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+
+[node name="RBlock6" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 960.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+
+[node name="RBlock7" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 576.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+
+[node name="RBlock8" parent="Blocks" instance=ExtResource( 10 )]
+modulate = Color( 0.909804, 0.027451, 0.027451, 1 )
+position = Vector2( 704.926, 79.5848 )
+points = 30
+hitsToBreak = 3
+[connection signal="body_entered" from="Walls/Lose Box" to="Walls/Lose Box" method="_on_Lose_Box_body_entered"]

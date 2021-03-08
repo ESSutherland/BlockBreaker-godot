@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Score.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scripts/Score.gd" type="Script" id=2]
+
+[node name="Node" type="Node"]
+
+[node name="Score Label" type="Label" parent="."]
+margin_left = 367.174
+margin_top = 193.0
+margin_right = 530.174
+margin_bottom = 233.0
+custom_fonts/font = ExtResource( 1 )
+text = "SCORE:"
+align = 2
+valign = 1
+
+[node name="Score " type="Label" parent="."]
+margin_left = 530.639
+margin_top = 193.0
+margin_right = 617.639
+margin_bottom = 233.0
+custom_fonts/font = ExtResource( 1 )
+text = "999"
+valign = 1
+script = ExtResource( 2 )
